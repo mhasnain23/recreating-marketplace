@@ -8,11 +8,11 @@ import { redirect } from "next/navigation";
 export default async function Home() {
   const userInfo = await fetchUserAction();
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
-  if (!userInfo.success) {
-    redirect("/unauth-page");
-  }
+  // if (!userInfo.success) {
+  //   redirect("/unauth-page");
+  // }
 
   const product = await fetchProductsAction();
 
@@ -54,7 +54,12 @@ export default async function Home() {
             />
           </div>
         </div>
-        <HomeBooksCard products={product.data} />
+        <div className="flex flex-col min-h-screen items-center justify-center">
+          <h2 className="mb-12 text-4xl font-bold text-white/90">
+            Latest Products
+          </h2>
+          <HomeBooksCard products={product.data} userInfo={userInfo} />
+        </div>
       </div>
     </main>
   );

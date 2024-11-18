@@ -323,7 +323,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             shipping_address_collection: {
-                allowed_countries: ["PK"], // Add countries as needed
+                allowed_countries: ["US", "PK", "CA"], // Add countries as needed
             },
             shipping_options: [
                 {
@@ -331,7 +331,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
                         type: 'fixed_amount',
                         fixed_amount: {
                             amount: 0,
-                            currency: 'pkr',
+                            currency: 'usd',
                         },
                         display_name: 'Free shipping',
                         delivery_estimate: {
@@ -349,7 +349,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
             ],
             line_items: items.map(item => ({
                 price_data: {
-                    currency: 'pkr',
+                    currency: 'usd',
                     product_data: {
                         name: item.productName,
                         images: [item.productImage],
@@ -486,4 +486,4 @@ export const verifyPayment = async (sessionId: string) => {
         console.error('Error verifying payment:', error);
         return { success: false, error: 'Failed to verify payment' };
     }
-};  
+};

@@ -35,26 +35,27 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard mt-[10rem]">
-      <h1>Vendor Dashboard</h1>
-      <div>
-        <h2>Sales Overview</h2>
-        {/* Display vendor data */}
-        {vendorData && (
-          <div>
-            <p>Total Sales: ${vendorData.totalSales}</p>
-            <p>Pending Payments: ${vendorData.pendingPayments}</p>
-            <p>Order Status: {vendorData.orderStatus}</p>
-          </div>
-        )}
-        <input
-          type="text"
-          placeholder="Search by Order ID"
-          value={searchId}
-          onChange={(e) => setSearchId(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
+      <div className="max-w-7xl mx-auto flex flex-col items-center gap-20">
+        <h1 className="text-5xl font-bold">Vendor Dashboard</h1>
+        <div className="max-w-lg">
+          <h2>Sales Overview</h2>
+          {/* Display vendor data */}
+          {vendorData && (
+            <div>
+              <p>Total Sales: ${vendorData.totalSales}</p>
+              <p>Pending Payments: ${vendorData.pendingPayments}</p>
+              <p>Order Status: {vendorData.orderStatus}</p>
+            </div>
+          )}
+          <input
+            type="text"
+            placeholder="Search by Order ID"
+            value={searchId}
+            onChange={(e) => setSearchId(e.target.value)}
+          />
+          <button onClick={handleSearch}>Search</button>
+        </div>
       </div>
-
       <h1>Buyer Dashboard</h1>
       <div>
         <h2>Your Orders</h2>

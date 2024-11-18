@@ -9,7 +9,7 @@ import { createPaymentSession, fetchUserAction } from "@/actions";
 import { useState, useEffect } from "react";
 import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function CartPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,9 @@ export default function CartPage() {
 
       if (response.url) {
         window.location.href = response.url;
-        router.push("/dashboard");
+      }
+      if (response.success) {
+        redirect("/dashboard");
       }
     } catch (error: any) {
       console.error("Checkout error:", error);

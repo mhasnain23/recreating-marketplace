@@ -18,7 +18,11 @@ import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { editProductAction, deleteProductAction } from "@/actions";
+import {
+  editProductAction,
+  deleteProductAction,
+  fetchProductsAction,
+} from "@/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -86,6 +90,24 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
     if (isLoading) {
       router.refresh();
     }
+
+    // Function to fetch products
+    const fetchProducts = async () => {
+      try {
+        await fetchProductsAction(); // Fetch updated products
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    // Fetch products initially
+    fetchProducts();
+
+    // Set up polling to fetch products every 5 seconds
+    const intervalId = setInterval(fetchProducts, 5000); // 5000 ms = 5 seconds
+
+    // Cleanup function to clear the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleEdit = (product: Product) => {
@@ -181,13 +203,14 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
   console.log(editProductForm, "editProductForm");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 p-3 mt-5">
+    // <main className="lg:max-w-7xl w-screen mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 px-10">
       {products.map((product: Product) => (
         <Card
           key={product._id}
-          className="hover:scale-[1.07] transition-all ease-in duration-[0.2s]"
+          className="hover:scale-[1.07] transition-all ease-in duration-[0.2s] p-0"
         >
-          <CardContent>
+          <CardContent className="p-0">
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <Link
                 href={
@@ -195,11 +218,11 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
                 }
               >
                 <Image
-                  className="p-8 rounded-xl object-cover scale-[1.2] transition-all ease-in duration-[0.2s]"
+                  className="p-8 rounded-2xl object-cover"
                   src={product.productImage}
                   alt={product.productName}
-                  width={300}
-                  height={200}
+                  width={400}
+                  height={300}
                   quality={100}
                   priority
                 />
@@ -379,6 +402,7 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
         </Card>
       ))}
     </div>
+    // </main>
   );
 };
 

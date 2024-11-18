@@ -43,7 +43,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
-    "react-toastify": "^10.0.5",
+    "react-toastify": "^10.0.6",
     "recharts": "^2.13.0",
     "sonner": "^1.7.0",
     "stripe": "^17.3.1",
