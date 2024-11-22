@@ -6,9 +6,8 @@ import {
 import AddNewProduct from "@/components/AddNewProduct";
 import ProductCard from "@/components/product-card";
 import SearchComponent from "@/components/ProductFilter/index";
-import connectDB from "@/lib/mongodb";
-// import store from "@/redux/store";
 import { ProductResponse, UserInfo } from "@/types";
+// import store from "@/redux/store";
 // import { Provider } from "react-redux";
 
 interface ProductsPageProps {

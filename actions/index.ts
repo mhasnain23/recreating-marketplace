@@ -528,26 +528,28 @@ export const verifyPayment = async (sessionId: string) => {
 
 // Fetch all orders for a vendor
 // This function is used to fetch all orders for a vendor
-export const fetchVendorOrders = async (vendorId: string) => {
-    try {
-        await connectDB();
+// export const fetchVendorOrders = async (vendorId: string) => {
+//     try {
+//         await connectDB();
 
-        const orders = await Order.find({ 'products._id': vendorId })
-            .populate('userId', 'email name')
-            .populate('products.productId')
-            .sort({ orderDate: -1 });
+//         // Update query to reflect the actual schema
+//         const orders = await Order.find({ 'products.vendorId': vendorId })
+//             .populate('userId', 'email name')
+//             .populate('products.productId', 'name email') // Adjust fields as per schema
+//             .sort({ orderDate: -1 });
 
-        if (!orders) {
-            throw new Error('No orders found for the vendor');
-        }
+//         if (!orders || orders.length === 0) {
+//             console.log(`No orders found for vendorId: ${vendorId}`);
+//             throw new Error('No orders found for the vendor');
+//         }
 
-        return {
-            success: true,
-            data: JSON.parse(JSON.stringify(orders))
-        };
-    } catch (error) {
-        console.error('Error fetching orders for vendor:', error);
-        return { success: false, error: 'Failed to fetch orders for vendor' };
-    }
-};
+//         return {
+//             success: true,
+//             data: JSON.parse(JSON.stringify(orders)),
+//         };
+//     } catch (error: any) {
+//         console.error('Error fetching orders for vendor:', error.message);
+//         return { success: false, error: 'Failed to fetch orders for vendor' };
+//     }
+// };
 

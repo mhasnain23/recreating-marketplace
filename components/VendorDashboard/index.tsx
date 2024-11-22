@@ -1,24 +1,28 @@
-// import { useEffect, useState } from "react";
-import { fetchUserAction, fetchUserOrders, fetchVendorOrders } from "@/actions";
-// import SalesChart from "../SalesChart";
+import { fetchUserAction } from "@/actions";
+//fetchVendorOrders
 import { OrdersDashboard } from "../OrderDasboard";
-// import PaymentStatus from "../VerifyPayment";
 
 export default async function VendorDashboard() {
-  const { data } = await fetchUserAction(); // Retrieve userId from action
-  const order = await fetchVendorOrders(data._id);
+  try {
+    // console.log("Vendor ID:", data._id); // Ensure vendorId is correct
 
-  // console.log(data._id);
+    // const orderResponse = await fetchVendorOrders(data._id);
 
-  console.log(order);
+    // console.log(orderResponse);    const { data } = await fetchUserAction(); // Fetch user data
 
-  // const sessionId = await order.data.stripeSessionId;
+    // if (!orderResponse.success) {
+    //   console.error("Error fetching orders:", orderResponse.error);
+    //   return <div>Error fetching vendor orders</div>;
+    // }
 
-  return (
-    <div className="max-w-7xl mx-auto mt-[10rem]">
-      <h1>Vendor Dashboard</h1>
-      <OrdersDashboard data={order.data} role={data.role} />
-      {/* <PaymentStatus sessionId={sessionId} /> */}
-    </div>
-  );
+    return (
+      <div className="max-w-7xl mx-auto mt-[10rem]">
+        <h1>Vendor Dashboard</h1>
+        {/* <OrdersDashboard data={orderResponse.data} role={data.role} /> */}
+      </div>
+    );
+  } catch (error: any) {
+    console.error("Error in VendorDashboard:", error.message);
+    return <div>Failed to load dashboard</div>;
+  }
 }
