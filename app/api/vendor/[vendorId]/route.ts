@@ -17,7 +17,7 @@ export async function GET(request: Request, { params }: { params: { vendorId: st
         await connectDB();
 
         // Query the Order collection to find orders that contain products from the specified vendor
-        const orders = await Order.find({ 'products.vendorId': vendorId })
+        const orders = await Order.find({ 'products._id': vendorId })
             // Populate the userId field with the user's email and name for more detailed information
             .populate('userId', 'email name')
             // Populate the productId field within products to include product name and price
