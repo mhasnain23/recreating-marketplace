@@ -55,17 +55,17 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
 
 export default ProductsPage;
 
-export async function fetchDataByRoleAction(role: string) {
-  try {
-    await connectDB();
-    const data = await fetchUserAction();
-    if (data.success && data.data.role === role) {
-      return { success: true, data: data.data };
-    } else {
-      return { success: false, error: "Role does not match" };
-    }
-  } catch (error) {
-    console.error("Error fetching data by role:", error);
-    return { success: false, error: "Failed to fetch data by role" };
-  }
-}
+// export async function fetchDataByRoleAction(role: string) {
+//   try {
+//     await connectDB();
+//     const data = await fetchUserAction();
+//     if (data.success && data.data.role === role) {
+//       return { success: true, data: data.data };
+//     } else {
+//       return { success: false, error: "Role does not match" };
+//     }
+//   } catch (error) {
+//     console.error("Error fetching data by role:", error);
+//     return { success: false, error: "Failed to fetch data by role" };
+//   }
+// }

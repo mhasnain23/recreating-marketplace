@@ -10,15 +10,18 @@ import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
 import Order from "@/models/order";
 
+// Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // user register action
+// This function is used to register a new user
 export async function registerUserAction(formData: any) {
     await connectDB();
     try {
         const { userName, email, password, role } = formData;
         const existingUser = await UserModel.findOne({ email });
 
+        // Check if user already exists
         if (existingUser) {
             return {
                 success: false,
@@ -26,10 +29,12 @@ export async function registerUserAction(formData: any) {
             };
         }
 
+        // Generate salt for password hashing
         const salt = await bcryptjs.genSalt(10);
-        // hashed the pass for comparing in user login action
+        // Hash the password for secure storage
         const hashedPassword = await bcryptjs.hash(password, salt)
 
+        // Create a new user instance
         const newUser = new UserModel({
             userName,
             email,
@@ -37,21 +42,21 @@ export async function registerUserAction(formData: any) {
             role,
         })
 
+        // Save the new user to the database
         const savedUser = await newUser.save()
-        // saving our user to db and accessing the data in json formatted from mongoDB
+        // If user is saved successfully, return the user data
         if (savedUser) {
             return {
                 success: true,
                 data: JSON.parse(JSON.stringify(savedUser))
             }
-            // if any network issue or db is cruppted then this happens
+            // If any error occurs during user registration, return an error message
         } else {
             return {
                 success: false,
                 message: "Something went wrong! please try again",
             };
         }
-        // same for this if any network issue or db is cruppted then this happens
     } catch (error: any) {
         console.error(error);
         return NextResponse.json({ success: false, "internal server error": error })
@@ -61,13 +66,16 @@ export async function registerUserAction(formData: any) {
 
 
 // Login user actions
+// This function is used to login a user
 export async function loginUserAction(formData: any) {
     await connectDB();
     try {
         const { email, password } = formData;
 
+        // Find the user with the provided email
         const existingUser = await UserModel.findOne({ email });
 
+        // If user does not exist, return an error message
         if (!existingUser) {
             return {
                 success: false,
@@ -75,8 +83,10 @@ export async function loginUserAction(formData: any) {
             };
         }
 
+        // Compare the provided password with the stored password
         const checkPassword = await bcryptjs.compare(password, existingUser.password);
 
+        // If password is incorrect, return an error message
         if (!checkPassword) {
             return {
                 success: false,
@@ -84,6 +94,7 @@ export async function loginUserAction(formData: any) {
             };
         }
 
+        // If password is correct, create a JWT token for the user
         const createdTokenData = {
             id: existingUser._id,
             userName: existingUser.userName,
@@ -95,9 +106,11 @@ export async function loginUserAction(formData: any) {
             expiresIn: "1d",
         });
 
+        // Set the token in the cookies
         const getCookies = cookies();
         getCookies.set("token", token);
 
+        // Return a success message
         return {
             success: true,
             message: "Login successfull",
@@ -113,12 +126,14 @@ export async function loginUserAction(formData: any) {
 
 
 // fetch user action for authentication
+// This function is used to fetch the user data for authentication
 export async function fetchUserAction() {
     await connectDB();
     try {
         const getCookies = cookies()
         const token = getCookies.get("token")?.value || ""
 
+        // If token is not provided, return an error message
         if (token === "") {
             return {
                 success: false,
@@ -126,9 +141,11 @@ export async function fetchUserAction() {
             }
         }
 
+        // Verify the token and get the user data
         const decodedToken = jwt.verify(token, "DEFAULT_KEY") as jwt.JwtPayload; // Type assertion
         const getUserInfo = await UserModel.findOne({ _id: decodedToken.id });
 
+        // If user data is found, return the user data
         if (getUserInfo) {
             return {
                 success: true,
@@ -151,12 +168,14 @@ export async function fetchUserAction() {
 
 
 // Logout user
+// This function is used to logout a user
 export async function logoutAction() {
     const getCookies = cookies();
     getCookies.set("token", "");
 }
 
 
+// This function is used to add a new product
 export async function productsFormAction(formData: any, pathToRevalidate: any) {
     await connectDB();
     try {
@@ -202,6 +221,7 @@ export async function productsFormAction(formData: any, pathToRevalidate: any) {
 
 
 // Fetch all products from mongoDB
+// This function is used to fetch all products from the database
 export async function fetchProductsAction() {
     await connectDB();
     try {
@@ -222,6 +242,7 @@ export async function fetchProductsAction() {
 
 
 // fetch product by id for details page
+// This function is used to fetch a product by its id
 export async function fetchProductByIdAction(id: any) {
     await connectDB();
     try {
@@ -241,6 +262,7 @@ export async function fetchProductByIdAction(id: any) {
 
 
 // fetch filter product
+// This function is used to search for products
 export const searchProducts = async (query: string) => {
     try {
         const products = await Product.find({
@@ -256,6 +278,8 @@ export const searchProducts = async (query: string) => {
     }
 }
 
+// Edit product action
+// This function is used to edit a product
 interface EditProductData {
     productId: string;
     productName: string;
@@ -293,6 +317,8 @@ export const editProductAction = async (data: EditProductData) => {
     }
 };
 
+// Delete product action
+// This function is used to delete a product
 export const deleteProductAction = async (productId: string) => {
     try {
         await connectDB();
@@ -310,6 +336,8 @@ export const deleteProductAction = async (productId: string) => {
     }
 };
 
+// Create payment session
+// This function is used to create a payment session for the user
 export const createPaymentSession = async (items: any[], userId: string) => {
     try {
         if (!items || items.length === 0) {
@@ -317,13 +345,14 @@ export const createPaymentSession = async (items: any[], userId: string) => {
         }
 
         if (!userId) {
+
             return { success: false, error: 'User not authenticated' };
         }
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             shipping_address_collection: {
-                allowed_countries: ["US", "PK", "CA"], // Add countries as needed
+                allowed_countries: ["US", "PK"], // Add countries as needed
             },
             shipping_options: [
                 {
@@ -390,6 +419,8 @@ export const createPaymentSession = async (items: any[], userId: string) => {
     }
 };
 
+// Handle Stripe webhook
+// This function is used to handle Stripe webhooks
 export const handleStripeWebhook = async (event: any) => {
     try {
         switch (event.type) {
@@ -446,6 +477,7 @@ export const handleStripeWebhook = async (event: any) => {
 };
 
 // Fetch orders for a user
+// This function is used to fetch all orders for a user
 export const fetchUserOrders = async (userId: string) => {
     try {
         await connectDB();
@@ -453,6 +485,10 @@ export const fetchUserOrders = async (userId: string) => {
         const orders = await Order.find({ userId })
             .populate('products.productId')
             .sort({ orderDate: -1 });
+
+        if (!orders) {
+            throw new Error('No orders found for the user');
+        }
 
         return {
             success: true,
@@ -465,6 +501,7 @@ export const fetchUserOrders = async (userId: string) => {
 };
 
 // Verify payment status
+// This function is used to verify the payment status of an order
 export const verifyPayment = async (sessionId: string) => {
     try {
         await connectDB();
@@ -487,3 +524,30 @@ export const verifyPayment = async (sessionId: string) => {
         return { success: false, error: 'Failed to verify payment' };
     }
 };
+
+
+// Fetch all orders for a vendor
+// This function is used to fetch all orders for a vendor
+export const fetchVendorOrders = async (vendorId: string) => {
+    try {
+        await connectDB();
+
+        const orders = await Order.find({ 'products._id': vendorId })
+            .populate('userId', 'email name')
+            .populate('products.productId')
+            .sort({ orderDate: -1 });
+
+        if (!orders) {
+            throw new Error('No orders found for the vendor');
+        }
+
+        return {
+            success: true,
+            data: JSON.parse(JSON.stringify(orders))
+        };
+    } catch (error) {
+        console.error('Error fetching orders for vendor:', error);
+        return { success: false, error: 'Failed to fetch orders for vendor' };
+    }
+};
+
