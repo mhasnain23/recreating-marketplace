@@ -1,17 +1,15 @@
 // import { verifyPayment } from "@/actions";
 import { fetchUserAction, fetchUserOrders } from "@/actions";
 import { OrdersDashboard } from "../OrderDasboard";
-import PaymentStatus from "../VerifyPayment";
+// import PaymentStatus from "../VerifyPayment";
 
 const BuyerDashboard = async () => {
-  const { data } = await fetchUserAction(); // Retrieve userId from action
+  const { data } = await fetchUserAction();
   const orders = await fetchUserOrders(data._id);
 
   if (!orders.success) {
     return <div>No order foind for: {orders.error}</div>;
   }
-
-  // console.log(orders);
 
   // console.log(orders);
 

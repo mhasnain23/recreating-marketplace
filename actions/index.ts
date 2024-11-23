@@ -9,6 +9,7 @@ import Product from "@/models/product";
 import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
 import Order from "@/models/order";
+import { Order as OrderType } from "@/types";
 
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -500,6 +501,23 @@ export const fetchUserOrders = async (userId: string) => {
     }
 };
 
+export async function fetchAllOrderForVendorAction() {
+    await connectDB();
+    try {
+        const orders = await Order.find({});
+        return {
+            success: true,
+            data: JSON.parse(JSON.stringify(orders)), // Safely serialize data
+        };
+    } catch (error: any) {
+        return {
+            success: false,
+            message: `Failed to fetch orders: ${error.message}`,
+            data: [],
+        };
+    }
+}
+
 // Verify payment status
 // This function is used to verify the payment status of an order
 export const verifyPayment = async (sessionId: string) => {
@@ -524,32 +542,3 @@ export const verifyPayment = async (sessionId: string) => {
         return { success: false, error: 'Failed to verify payment' };
     }
 };
-
-
-// Fetch all orders for a vendor
-// This function is used to fetch all orders for a vendor
-// export const fetchVendorOrders = async (vendorId: string) => {
-//     try {
-//         await connectDB();
-
-//         // Update query to reflect the actual schema
-//         const orders = await Order.find({ 'products.vendorId': vendorId })
-//             .populate('userId', 'email name')
-//             .populate('products.productId', 'name email') // Adjust fields as per schema
-//             .sort({ orderDate: -1 });
-
-//         if (!orders || orders.length === 0) {
-//             console.log(`No orders found for vendorId: ${vendorId}`);
-//             throw new Error('No orders found for the vendor');
-//         }
-
-//         return {
-//             success: true,
-//             data: JSON.parse(JSON.stringify(orders)),
-//         };
-//     } catch (error: any) {
-//         console.error('Error fetching orders for vendor:', error.message);
-//         return { success: false, error: 'Failed to fetch orders for vendor' };
-//     }
-// };
-

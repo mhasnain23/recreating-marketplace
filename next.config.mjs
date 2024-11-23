@@ -10,6 +10,7 @@ const nextConfig = {
       "encrypted-tbn0.gstatic.com",
       "xcessorieshub.com",
       "cdn.suitdirect.co.uk",
+      "appleshop.com.pk",
     ],
   },
 };

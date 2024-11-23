@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export interface Product {
     _id: string;
     productName: string;
@@ -25,4 +27,34 @@ export interface UserInfo {
         role: "vendor" | "buyer";
     };
     message?: string;
+}
+
+// types/order.ts
+
+export interface Product {
+    productId: Types.ObjectId;
+    quantity: number;
+    price: number;
+}
+
+export interface Order {
+    _id: Types.ObjectId;
+    userId: {
+        _id: Types.ObjectId;
+        name: string;
+        email: string;
+    };
+    products: {
+        productId: {
+            _id: Types.ObjectId;
+            name: string;
+        };
+        quantity: number;
+        price: number;
+    }[];
+    totalAmount: number;
+    stripeSessionId: string;
+    paymentStatus: "pending" | "completed" | "failed";
+    shippingAddress: string;
+    orderDate: Date;
 }
