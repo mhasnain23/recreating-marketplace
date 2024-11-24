@@ -1,48 +1,65 @@
-import { NextResponse } from 'next/server'; // For handling server-side responses
-import { headers } from 'next/headers'; // For accessing request headers
-import { handleStripeWebhook } from '@/actions'; // Custom handler for specific webhook events
-import { buffer } from 'micro'; // For raw body handling
+import { buffer } from 'micro';
+import Stripe from 'stripe';
+import Order from '@/models/order'; // Your MongoDB Order model
+import connectToDB from '@/lib/mongodb';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-// Stripe secret keys from environment variables
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY!;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-// Stripe instance initialization
-const stripe = require('stripe')(stripeSecretKey);
-
-// Disable Next.js body parsing to handle raw body required for Stripe signature
 export const config = {
     api: {
         bodyParser: false,
     },
 };
 
-export default async function handler(req: any, res: any) {
-    if (req.method !== 'POST') {
-        res.setHeader('Allow', 'POST');
-        return res.status(405).json({ error: 'Method Not Allowed' });
-    }
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === 'POST') {
+        const buf = await buffer(req);
+        const sig = req.headers['stripe-signature'];
+        const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-    try {
-        // Read raw body from the request
-        const rawBody = await buffer(req);
-        // Extract Stripe signature from the headers
-        const signature = req.headers['stripe-signature'];
+        let event;
 
-        // Verify and construct the Stripe event
-        const event = stripe.webhooks.constructEvent(rawBody.toString(), signature, webhookSecret);
-
-        // Handle the Stripe event (custom handler logic in `handleStripeWebhook`)
-        const result = await handleStripeWebhook(event);
-
-        if (!result.success) {
-            return res.status(400).json({ error: result.error });
+        try {
+            event = stripe.webhooks.constructEvent(buf, sig!, endpointSecret);
+        } catch (err: any) {
+            console.error('Webhook signature verification failed:', err.message);
+            return res.status(400).send(`Webhook Error: ${err.message}`);
         }
 
-        // Acknowledge receipt of the event
+        await connectToDB();
+
+        // Handle the event
+        switch (event.type) {
+            case 'payment_intent.succeeded': {
+                const paymentIntent = event.data.object;
+                const orderId = paymentIntent.metadata.orderId;
+
+                try {
+                    const order = await Order.findByIdAndUpdate(
+                        orderId,
+                        { paymentStatus: 'paid' },
+                        { new: true }
+                    );
+
+                    if (!order) {
+                        console.error('Order not found');
+                    } else {
+                        console.log('Order payment status updated via webhook:', order);
+                    }
+                } catch (err) {
+                    console.error('Error updating order:', err);
+                }
+                break;
+            }
+            default:
+                console.log(`Unhandled event type ${event.type}`);
+        }
+
+        // Return a 200 response to acknowledge receipt of the event
         res.status(200).json({ received: true });
-    } catch (error: any) {
-        console.error('Webhook error:', error.message || error);
-        res.status(400).json({ error: 'Webhook handler failed' });
+    } else {
+        res.setHeader('Allow', 'POST');
+        res.status(405).end('Method Not Allowed');
     }
 }

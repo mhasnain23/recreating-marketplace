@@ -393,6 +393,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cart`,
             metadata: {
                 userId: userId,
+                // orderId: items,
             },
         });
 

@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
         {
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product', // Reference Product model
+                ref: 'Product', // Reference Product model 
                 required: true,
             },
             quantity: {
@@ -38,8 +38,8 @@ const orderSchema = new mongoose.Schema({
     },
     paymentStatus: {
         type: String,
-        enum: ['pending', 'completed', 'failed'],
-        default: 'pending',
+        enum: ["pending", "paid", "shipped", "delivered"],  // Example values
+        required: true,
     },
     shippingAddress: {
         type: String,
