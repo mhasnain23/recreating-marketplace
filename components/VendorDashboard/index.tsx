@@ -17,23 +17,23 @@ export default async function VendorDashboard() {
   const orders = result.data;
 
   // Prepare data for the chart
-  const chartData = Array.isArray(orders)
-    ? orders.reduce((acc: any[], order) => {
-        const date = new Date(order.orderDate).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-        });
+  // const chartData = Array.isArray(orders)
+  //   ? orders.reduce((acc: any[], order) => {
+  //       const date = new Date(order.orderDate).toLocaleDateString("en-US", {
+  //         month: "short",
+  //         day: "numeric",
+  //       });
 
-        const existingDate = acc.find((item) => item.date === date);
+  //       const existingDate = acc.find((item) => item.date === date);
 
-        if (existingDate) {
-          existingDate.orders += 1;
-        } else {
-          acc.push({ date, orders: 1 });
-        }
-        return acc;
-      }, [])
-    : [];
+  //       if (existingDate) {
+  //         existingDate.orders += 1;
+  //       } else {
+  //         acc.push({ date, orders: 1 });
+  //       }
+  //       return acc;
+  //     }, [])
+  //   : [];
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 mt-24 shadow-md rounded-lg">

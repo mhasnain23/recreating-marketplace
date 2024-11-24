@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
 import Order from "@/models/order";
 import { Order as OrderType } from "@/types";
+import { NextApiRequest, NextApiResponse } from "next";
 
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -519,6 +520,7 @@ export async function fetchAllOrderForVendorAction() {
     }
 }
 
+
 // Verify payment status
 // This function is used to verify the payment status of an order
 export const verifyPayment = async (sessionId: string) => {
@@ -543,3 +545,60 @@ export const verifyPayment = async (sessionId: string) => {
         return { success: false, error: 'Failed to verify payment' };
     }
 };
+
+
+
+interface UpdateStatusResponse {
+    success: boolean;
+    message: string;
+}
+
+export async function updateStatusByOrderIdAction({ orderId, status }: { orderId: string, status: string }) {
+    try {
+        await connectDB();
+
+        // const { orderId, status } = formData;
+
+        // console.log("Received formData:", orderId, status);
+
+        // Convert status to a plain string if it's an object
+        const normalizedStatus = typeof status === "string" ? status : String(status);
+
+        const allowedStatuses = ["pending", "paid", "shipped"];
+        if (!allowedStatuses.includes(normalizedStatus)) {
+            return NextResponse.json({
+                success: false,
+                message: `Invalid status value: ${normalizedStatus}`,
+            });
+        }
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            orderId, // Query by ID
+            { paymentStatus: normalizedStatus }, // Update the paymentStatus field
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedOrder) {
+            console.log("Order not found or update failed.");
+            return NextResponse.json({
+                success: false,
+                message: "Failed to update order status!",
+            });
+        }
+
+        console.log("Order updated successfully:", updatedOrder);
+        return NextResponse.json({
+            success: true,
+            message: "Order status updated successfully!",
+        });
+    } catch (error) {
+        console.error("Error updating order status:", error);
+        return NextResponse.json({
+            success: false,
+            message: "An error occurred while updating the order status.",
+        });
+    }
+}
+
+
+

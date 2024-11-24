@@ -2,7 +2,7 @@ import { fetchProductByIdAction } from "@/actions";
 import DetailsPage from "@/components/details-page";
 
 const Details = async ({ params }: { params: any }) => {
-  console.log(params);
+  // console.log(params);
 
   // Assuming params contains an id property
   const productId = params.id; // Extract the ID from params

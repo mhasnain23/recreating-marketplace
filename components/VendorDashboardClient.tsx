@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import {
@@ -21,100 +21,102 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { updateStatusByOrderIdAction } from "@/actions";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 // Define the type for the order
 interface Order {
   _id: string;
   orderDate: string;
   paymentStatus: string;
-  items: { _id: string; name: string; quantity: number }[];
+  items: { _id: string; price: string; quantity: number }[];
 }
-
-export default function VendorDashboardClient({ orders }: { orders: Order[] }) {
+//Order[]
+export default function VendorDashboardClient({ orders }: { orders: any }) {
+  const [isUpdating, setIsUpdating] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [newStatus, setNewStatus] = useState<string>("");
+  const [dialogOrderId, setDialogOrderId] = useState<string | null>(null);
+  const [newStatus, setNewStatus] = useState("");
 
-  // Filter orders based only on `orderId`
+  const router = useRouter();
+
+  // Automatically refresh the page if updating
+  useEffect(() => {
+    if (isUpdating) {
+      window.location.reload();
+      router.refresh();
+    }
+  }, [isUpdating, router]);
+
+  // Filter orders based on search term
   const filteredOrders = Array.isArray(orders)
     ? orders.filter((order) =>
         order._id.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
 
+  // Determine the color of the status badge
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "paid":
         return "bg-green-100 text-green-800";
       case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "failed":
-        return "bg-red-100 text-red-800";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
 
-  const handleViewDetails = async (orderId: string) => {
-    try {
-      const res = await fetch(`/api/getOrderDetails?id=${orderId}`);
-      const data = await res.json();
-
-      if (data.success) {
-        setSelectedOrder(data.order);
-        setNewStatus(data.order.paymentStatus); // Set the current status
-      } else {
-        alert("Failed to fetch order details!");
-      }
-    } catch (error) {
-      console.error("Error fetching order details:", error);
-      alert("An error occurred while fetching order details.");
+  // Open the dialog for the selected order
+  const handleViewDetails = (orderId: string) => {
+    setDialogOrderId(orderId);
+    const selectedOrder = orders.find((order: any) => order._id === orderId);
+    if (selectedOrder) {
+      setNewStatus(selectedOrder.paymentStatus); // Set the initial status
     }
   };
 
+  // Handle updating the order status
   const handleStatusChange = async () => {
-    if (selectedOrder && newStatus !== selectedOrder.paymentStatus) {
+    if (dialogOrderId && newStatus) {
       try {
-        // Debug log to check the request payload
-        console.log(
-          "Updating status for order:",
-          selectedOrder._id,
-          "to:",
-          newStatus
-        );
+        setIsUpdating(true);
 
-        const res = await fetch(`/api/updateOrderStatus`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.parse(
-            JSON.stringify({
-              orderId: selectedOrder._id,
-              newStatus,
-            })
-          ),
+        // console.log(
+        //   "Updating status for order:",
+        //   dialogOrderId,
+        //   "to:",
+        //   newStatus
+        // );
+
+        const response = await updateStatusByOrderIdAction({
+          orderId: dialogOrderId,
+          status: newStatus,
         });
 
-        const data = await res.json();
-        console.log("API response:", data); // Debug log
+        // console.log(response);
 
-        if (data.success) {
-          setSelectedOrder({
-            ...selectedOrder,
-            paymentStatus: newStatus,
-          });
-          alert("Status updated successfully!");
-          setSelectedOrder(null);
+        if (response.ok) {
+          toast.success(
+            `Order #${dialogOrderId} status updated to ${newStatus}!`
+          );
+          setDialogOrderId(null); // Close the dialog
         } else {
-          alert("Failed to update status!");
+          console.error("Error updating status");
         }
       } catch (error) {
         console.error("Error updating order status:", error);
-        alert("An error occurred while updating the status.");
+        toast.error("Failed to update order status!");
+      } finally {
+        setIsUpdating(false);
       }
     }
   };
+
+  // log
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8 mt-24 shadow-md rounded-lg bg-[#111827] text-[#E5E5E5]">
@@ -132,7 +134,7 @@ export default function VendorDashboardClient({ orders }: { orders: Order[] }) {
       </div>
 
       <VendorDashboardChart
-        chartData={orders.reduce((acc: any[], order) => {
+        chartData={orders.reduce((acc: any[], order: any) => {
           const date = new Date(order.orderDate).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
@@ -192,10 +194,10 @@ export default function VendorDashboardClient({ orders }: { orders: Order[] }) {
         </CardContent>
       </Card>
 
-      {selectedOrder && (
+      {dialogOrderId && (
         <Dialog
-          open={!!selectedOrder}
-          onOpenChange={() => setSelectedOrder(null)}
+          open={!!dialogOrderId}
+          onOpenChange={() => setDialogOrderId(null)}
         >
           <DialogContent>
             <DialogHeader>
@@ -203,11 +205,7 @@ export default function VendorDashboardClient({ orders }: { orders: Order[] }) {
             </DialogHeader>
             <div className="space-y-4 text-sm text-[#E5E5E5]">
               <p>
-                <strong>Order ID:</strong> {selectedOrder._id}
-              </p>
-              <p>
-                <strong>Date:</strong>{" "}
-                {new Date(selectedOrder.orderDate).toLocaleString()}
+                <strong>Order ID:</strong> {dialogOrderId}
               </p>
               <p>
                 <strong>Status:</strong>
@@ -216,30 +214,25 @@ export default function VendorDashboardClient({ orders }: { orders: Order[] }) {
                   onChange={(e) => setNewStatus(e.target.value)}
                   className="ml-2 bg-[#1F2937] text-[#E5E5E5] border border-[#6D28D9] rounded-md p-2"
                 >
-                  <option value="paid">Paid</option>
-                  <option value="pending">Pending</option>
-                  <option value="failed">Failed</option>
+                  <option value="pending">pending</option>
+                  <option value="paid">paid</option>
+                  <option value="shipped">shipped</option>
                 </select>
               </p>
-              <p>
+              {/* <p>
                 <strong>Items:</strong>
-              </p>
-              <ul className="list-disc ml-5">
-                {selectedOrder.items?.map((item) => (
-                  <li key={item._id}>
-                    {item.name} - {item.quantity} pcs
-                  </li>
-                ))}
-              </ul>
+              </p> */}
             </div>
             <Button
+              disabled={isUpdating}
               onClick={handleStatusChange}
               className="mt-4 px-4 py-1 text-sm rounded bg-[#6D28D9] text-white hover:bg-purple-700"
             >
               Update Status
             </Button>
             <Button
-              onClick={() => setSelectedOrder(null)}
+              disabled={isUpdating}
+              onClick={() => setDialogOrderId(null)}
               className="mt-4 px-4 py-1 text-sm rounded bg-red-600 text-white hover:bg-red-700"
             >
               Close

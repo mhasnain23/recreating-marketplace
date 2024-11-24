@@ -30,7 +30,7 @@ const Navbar = () => {
     }
   };
 
-  console.log(userData);
+  // console.log(userData);
 
   useEffect(() => {
     fetchUserData();

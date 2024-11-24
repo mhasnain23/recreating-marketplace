@@ -57,8 +57,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         // Return a 200 response to acknowledge receipt of the event
-        res.status(200).json({ received: true });
     } else {
+        res.status(200).json({ received: true });
         res.setHeader('Allow', 'POST');
         res.status(405).end('Method Not Allowed');
     }

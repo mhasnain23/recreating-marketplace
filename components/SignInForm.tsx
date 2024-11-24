@@ -10,7 +10,7 @@ export default function SignInForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [signInFormData, setSignInFormData] = useState(initialSignInFormData);
 
-  console.log(signInFormData);
+  // console.log(signInFormData);
 
   const router = useRouter();
 

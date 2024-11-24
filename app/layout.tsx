@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Nav/Navbar";
-import { Toaster } from "@/components/ui/sonner";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
+import { Toaster } from "react-hot-toast";
+// import { Provider } from "react-redux";
+// import store from "@/redux/store";
 import ReduxProvider from "@/components/ReduxProvider";
 
 const poppins = Poppins({
@@ -26,9 +26,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.className} dark:bg-[#030712]`}>
         <ReduxProvider>
+          <Toaster position="top-center" reverseOrder={false} />
           <Navbar />
           {children}
-          <Toaster />
+          {/* <Toaster /> */}
         </ReduxProvider>
       </body>
     </html>

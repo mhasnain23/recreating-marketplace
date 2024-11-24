@@ -36,7 +36,7 @@ const SignUpForm = () => {
     }
   };
 
-  console.log(signUpFormData);
+  // console.log(signUpFormData);
 
   return (
     <div className="xl:min-h-[80vh] h-full flex w-full justify-center items-center font-[poppins] mt-20 px-10">

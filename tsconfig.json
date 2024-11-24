@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "models/product.js"
-  ],
+, "models/order.js"  ],
   "exclude": [
     "node_modules"
   ]

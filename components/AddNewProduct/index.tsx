@@ -28,7 +28,7 @@ const AddNewProduct = () => {
 
   const router = useRouter();
 
-  console.log(productFormData);
+  // console.log(productFormData);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +44,7 @@ const AddNewProduct = () => {
 
     // Handle form submission logic here
     const response = await productsFormAction(productFormData, "/products");
-    console.log(response);
+    // console.log(response);
 
     if (response) {
       window.location.reload();
