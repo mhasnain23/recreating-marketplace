@@ -25,7 +25,6 @@ export const initialSignUpFormData: SignUpDataProps = {
 }
 
 export const initialProductFormData = {
-    // productId: "",
     productName: "",
     productDescription: "",
     productPrice: "",

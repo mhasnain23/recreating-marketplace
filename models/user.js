@@ -1,8 +1,8 @@
-import mongoose, { Schema, model, models } from "mongoose"; // Ensure mongoose is fully imported
+import mongoose from "mongoose"; // Ensure mongoose is fully imported
 
-if (typeof window !== "undefined") {
-  throw new Error("Mongoose models cannot be used on the client-side");
-}
+// if (typeof window !== "undefined") {
+//   throw new Error("Mongoose models cannot be used on the client-side");
+// }
 
 const UserSchema = new mongoose.Schema({
   userName: {

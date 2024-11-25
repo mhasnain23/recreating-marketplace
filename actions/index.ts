@@ -178,48 +178,45 @@ export async function logoutAction() {
 
 
 // This function is used to add a new product
-export async function productsFormAction(formData: any, pathToRevalidate: any) {
+export async function productsFormAction(formData: any, pathToRevalidate: string) {
     await connectDB();
     try {
-        const {
-            productName,
-            productDescription,
-            productPrice,
-            productStock,
-            productImage
-        } = formData;
-        if (!productName || !productDescription || !productPrice || !productStock || !productImage) {
-            return {
+        // Extract and validate form data
+        const { productName, productDescription, productPrice, productStock, productImage } = formData;
+        if (![productName, productDescription, productPrice, productStock, productImage].every(Boolean)) {
+            return NextResponse.json({
                 success: false,
-                message: "All feilds are required"
-            }
+                message: "All fields are required.",
+            }, { status: 400 });
         }
 
-        const productFormData = new Product({
+        // Create a new product
+        const newProduct = new Product({
             productName,
             productDescription,
-            productPrice,
-            productStock,
-            productImage
-        })
+            productPrice: Number(productPrice), // Ensure proper type
+            productStock: Number(productStock), // Ensure proper type
+            productImage,
+        });
 
-        productFormData.save()
+        await newProduct.save();
 
-
-        if (productFormData) {
-            return {
-                success: true,
-                message: "Product added successfully"
-            }
-        }
+        // Revalidate the specified path
         revalidatePath(pathToRevalidate);
+
+        return NextResponse.json({
+            success: true,
+            message: "Product added successfully.",
+        });
     } catch (error: any) {
+        console.error("Error adding product:", error);
         return NextResponse.json({
             success: false,
-            message: "Something went wrong! please try again.",
-        })
+            message: "Something went wrong! Please try again.",
+        }, { status: 500 });
     }
 }
+
 
 
 // Fetch all products from mongoDB

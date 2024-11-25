@@ -21,7 +21,6 @@ interface ProductFormProps {
 
 const AddNewProduct = () => {
   const [productFormData, setProductFormData] = useState<ProductFormProps>({
-    // productId: "",
     productName: "",
     productDescription: "",
     productPrice: "",
@@ -56,12 +55,12 @@ const AddNewProduct = () => {
     }
 
     if (response) {
-      window.location.reload();
+      return;
+      // window.location.reload();
     }
     if (response) {
       setOpenDialog(false);
       setProductFormData({
-        // productId: "",
         productName: "",
         productDescription: "",
         productPrice: "",
@@ -131,7 +130,7 @@ const AddNewProduct = () => {
                 <Textarea
                   value={productFormData.productDescription}
                   onChange={(e) => {
-                    console.log(e);
+                    // console.log(e);
                     setProductFormData({
                       ...productFormData,
                       productDescription: e.target.value,

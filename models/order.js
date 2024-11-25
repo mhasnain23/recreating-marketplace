@@ -1,8 +1,8 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
-if (typeof window !== "undefined") {
-  throw new Error("Mongoose models cannot run on the client-side");
-}
+// if (typeof window !== "undefined") {
+//   throw new Error("Mongoose models cannot run on the client-side");
+// }
 
 const orderSchema = new mongoose.Schema({
   userId: {
