@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 // Define the Product schema with vendorId
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
   productName: {
     type: String,
     required: true,
   },
   productDescription: {
-    type: Number,
+    type: String, // Changed to String for description
     required: true,
   },
   productStock: {
@@ -15,11 +15,11 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   productPrice: {
-    type: String,
-    required: false,
+    type: Number, // Changed to Number for price
+    required: true,
   },
 });
 
-const Product =
-  mongoose.models.Product || mongoose.model("Product", productSchema);
+const Product = models.Product || model("Product", productSchema);
+
 export default Product;

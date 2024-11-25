@@ -1,20 +1,20 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
-const orderSchema = new mongoose.Schema({
+const orderSchema = new Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   vendorId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "User",
-    require: true,
+    required: true,
   },
   products: [
     {
       productId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Product", // Reference Product model
         required: true,
       },
@@ -39,7 +39,6 @@ const orderSchema = new mongoose.Schema({
   paymentStatus: {
     type: String,
     enum: ["pending", "paid", "shipped"], // Example values
-
     required: true,
   },
   shippingAddress: {
@@ -52,6 +51,6 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
+const Order = models.Order || model("Order", orderSchema);
 
 export default Order;
