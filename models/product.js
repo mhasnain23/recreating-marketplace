@@ -18,6 +18,10 @@ const productSchema = new Schema({
     type: Number, // Changed to Number for price
     required: true,
   },
+  productImage: {
+    type: String, // Changed to Number for price
+    required: true,
+  },
 });
 
 const Product = models.Product || model("Product", productSchema);
