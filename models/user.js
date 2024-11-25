@@ -4,7 +4,7 @@ if (typeof window !== "undefined") {
   throw new Error("Mongoose models cannot be used on the client-side");
 }
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
@@ -25,6 +25,6 @@ const UserSchema = new Schema({
   },
 });
 
-const UserModel = models.User || model("User", UserSchema);
+const UserModel = mongoose.models.User || mongoose.model("User", UserSchema);
 
 export default UserModel;

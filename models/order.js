@@ -4,7 +4,7 @@ if (typeof window !== "undefined") {
   throw new Error("Mongoose models cannot run on the client-side");
 }
 
-const orderSchema = new Schema({
+const orderSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -55,6 +55,6 @@ const orderSchema = new Schema({
   },
 });
 
-const Order = models.Order || model("Order", orderSchema);
+const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
 
 export default Order;

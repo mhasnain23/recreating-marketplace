@@ -1,10 +1,10 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import mongoose from "mongoose";
 
 if (typeof window !== "undefined") {
   throw new Error("Mongoose models cannot be used on the client-side");
 }
 
-const productSchema = new Schema({
+const productSchema = new mongoose.Schema({
   productName: {
     type: String,
     required: true,
@@ -27,5 +27,6 @@ const productSchema = new Schema({
   },
 });
 
-const Product = models.Product || model("Product", productSchema);
+const Product =
+  mongoose.models.Product || mongoose.model("Product", productSchema);
 export default Product;

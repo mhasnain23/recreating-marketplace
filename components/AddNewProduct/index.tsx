@@ -20,9 +20,14 @@ interface ProductFormProps {
 }
 
 const AddNewProduct = () => {
-  const [productFormData, setProductFormData] = useState<ProductFormProps>(
-    initialProductFormData
-  );
+  const [productFormData, setProductFormData] = useState<ProductFormProps>({
+    // productId: "",
+    productName: "",
+    productDescription: "",
+    productPrice: "",
+    productStock: "",
+    productImage: "",
+  });
   const [openDialog, setOpenDialog] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,24 +51,37 @@ const AddNewProduct = () => {
     const response = await productsFormAction(productFormData, "/products");
     // console.log(response);
 
+    if (!response) {
+      setError("Failed to add product");
+    }
+
     if (response) {
       window.location.reload();
     }
     if (response) {
       setOpenDialog(false);
-      setProductFormData(initialProductFormData);
+      setProductFormData({
+        // productId: "",
+        productName: "",
+        productDescription: "",
+        productPrice: "",
+        productStock: "",
+        productImage: "",
+      });
     }
   };
 
   function handleBtnValid() {
     return (
-      productFormData.productName.trim() !== "" &&
-      productFormData.productDescription.trim() !== "" &&
-      productFormData.productPrice.trim() !== "" &&
-      productFormData.productStock.trim() !== "" &&
-      productFormData.productImage.trim() !== ""
+      productFormData.productName.trim() &&
+      productFormData.productDescription.trim() &&
+      productFormData.productPrice &&
+      productFormData.productStock &&
+      productFormData.productImage.trim()
     );
   }
+
+  console.log(productFormData);
 
   return (
     <div className="font-[poppins]">
@@ -77,7 +95,13 @@ const AddNewProduct = () => {
         open={openDialog}
         onOpenChange={() => {
           setOpenDialog(false);
-          setProductFormData(initialProductFormData);
+          setProductFormData({
+            productName: "",
+            productDescription: "",
+            productPrice: "",
+            productStock: "",
+            productImage: "",
+          });
         }}
       >
         <DialogContent>
@@ -106,12 +130,13 @@ const AddNewProduct = () => {
                 <Label>Product Description:</Label>
                 <Textarea
                   value={productFormData.productDescription}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    console.log(e);
                     setProductFormData({
                       ...productFormData,
                       productDescription: e.target.value,
-                    })
-                  }
+                    });
+                  }}
                   required
                 />
               </div>
