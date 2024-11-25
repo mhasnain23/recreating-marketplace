@@ -10,9 +10,9 @@ export default async function Home() {
 
   // console.log(userInfo);
 
-  if (!userInfo.success) {
-    redirect("/unauth-page");
-  }
+  // if (!userInfo.success) {
+  //   redirect("/unauth-page");
+  // }
 
   const product = await fetchProductsAction();
 

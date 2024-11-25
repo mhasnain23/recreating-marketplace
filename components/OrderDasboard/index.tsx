@@ -78,8 +78,8 @@ export function OrdersDashboard({ data, role }: OrdersProps) {
         return "bg-green-100 text-green-800";
       case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "failed":
-        return "bg-red-100 text-red-800";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -105,7 +105,7 @@ export function OrdersDashboard({ data, role }: OrdersProps) {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-[#1F2937]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white/80">
               Total Orders
@@ -143,7 +143,7 @@ export function OrdersDashboard({ data, role }: OrdersProps) {
         </Card> */}
       </div>
 
-      <Card className="shadow-md">
+      <Card className="shadow-md bg-[#1F2937]">
         <CardHeader>
           <CardTitle className="text-lg font-bold text-white/80">
             Recent Orders
@@ -179,22 +179,6 @@ export function OrdersDashboard({ data, role }: OrdersProps) {
                     >
                       {order.paymentStatus}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {/* <TooltipProvider>
-                      <Tooltip delayDuration={2}>
-                        <TooltipTrigger>
-                          <button className="text-sm text-white/80 text-primary hover:underline">
-                            View Details
-                          </button>
-                        </TooltipTrigger> */}
-                    {/* <TooltipContent className="bg-white/80">
-                          <p className="text-gray-800">
-                            Click to view order details
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider> */}
                   </TableCell>
                 </TableRow>
               ))}

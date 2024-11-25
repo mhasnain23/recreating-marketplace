@@ -73,7 +73,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-[10rem] px-4">
+    <div className="max-w-7xl mx-auto min-h-screen mt-[10rem] px-4">
       <h1 className="text-3xl font-bold text-white/80 mb-8">Shopping Cart</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 space-y-4">

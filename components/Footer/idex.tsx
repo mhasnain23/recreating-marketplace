@@ -15,8 +15,14 @@ const Footer = () => {
         </nav>
         <aside className="mt-4">
           <p>
-            Copyright © {new Date().getFullYear()} - All rights reserved by
-            Muhammad Hasnain
+            Copyright © {new Date().getFullYear()} - All rights reserved by{" "}
+            <Link
+              href={"https://discord.gg/ThYcQ7WZ"}
+              target="_blank"
+              className="hover:border-b hover:border-b-white transition-all ease-in-out duration-200"
+            >
+              Muhammad Hasnain
+            </Link>
           </p>
         </aside>
       </footer>
