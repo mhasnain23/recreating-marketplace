@@ -33,7 +33,6 @@
     "lucide-react": "^0.452.0",
     "micro": "^10.0.1",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.7.2",
     "multer": "^1.4.5-lts.1",
     "next": "^14.2.15",
     "next-auth": "^4.24.8",
@@ -64,6 +63,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.14",
+    "mongoose": "^8.8.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

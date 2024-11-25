@@ -1,4 +1,7 @@
-import mongoose from "mongoose";
+let mongoose;
+if (typeof window === "undefined") {
+  mongoose = require("mongoose");
+}
 
 const UserSchema = new mongoose.Schema({
   userName: {
