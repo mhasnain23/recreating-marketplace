@@ -1,13 +1,16 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import mongoose, { Schema, models, model } from "mongoose";
 
-// Define the Product schema with vendorId
+if (typeof window !== "undefined") {
+  throw new Error("Mongoose models cannot be used on the client-side");
+}
+
 const productSchema = new Schema({
   productName: {
     type: String,
     required: true,
   },
   productDescription: {
-    type: String, // Changed to String for description
+    type: Number,
     required: true,
   },
   productStock: {
@@ -15,8 +18,8 @@ const productSchema = new Schema({
     required: true,
   },
   productPrice: {
-    type: Number, // Changed to Number for price
-    required: true,
+    type: String,
+    required: false,
   },
   productImage: {
     type: String, // Changed to Number for price
@@ -25,5 +28,4 @@ const productSchema = new Schema({
 });
 
 const Product = models.Product || model("Product", productSchema);
-
 export default Product;

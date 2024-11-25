@@ -1,6 +1,6 @@
 import { fetchAllOrderForVendorAction } from "@/actions";
 import VendorDashboardClient from "@/components/VendorDashboardClient";
-import VendorDashboardChart from "@/components/VendorDashboardChart";
+// import VendorDashboardChart from "@/components/VendorDashboardChart";
 
 export default async function VendorDashboard() {
   const result = await fetchAllOrderForVendorAction();
