@@ -390,7 +390,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
                 quantity: item.quantity,
             })),
             mode: 'payment',
-            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`,
             cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/cart`,
             metadata: {
                 userId: userId,

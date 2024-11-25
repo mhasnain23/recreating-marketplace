@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 // import { Provider } from "react-redux";
 // import store from "@/redux/store";
 import ReduxProvider from "@/components/ReduxProvider";
+import Footer from "@/components/Footer/idex";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
           <Toaster position="top-center" reverseOrder={false} />
           <Navbar />
           {children}
+          <Footer />
           {/* <Toaster /> */}
         </ReduxProvider>
       </body>

@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { createPaymentSession, fetchUserAction } from "@/actions";
 import { useState, useEffect } from "react";
 import { Loader2Icon } from "lucide-react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { redirect, useRouter } from "next/navigation";
 
 export default function CartPage() {
@@ -50,9 +51,10 @@ export default function CartPage() {
 
       if (response.url) {
         window.location.href = response.url;
+        toast.success("Order placed successfully");
       }
       if (response.success) {
-        redirect("/dashboard");
+        // redirect("/dashboard");
       }
     } catch (error: any) {
       console.error("Checkout error:", error);
