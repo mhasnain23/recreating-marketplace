@@ -177,46 +177,61 @@ export async function logoutAction() {
 }
 
 
+interface ProductFormData {
+    productName: string;
+    productDescription: string;
+    productPrice: string;
+    productStock: string;
+    productImage: string;
+}
+
 // This function is used to add a new product
-export async function productsFormAction(formData: any, pathToRevalidate: string) {
-    await connectDB();
+export async function productsFormAction(
+    formData: ProductFormData,
+    pathToRevalidate: string
+) {
     try {
-        // Extract and validate form data
+        await connectDB();
+
         const { productName, productDescription, productPrice, productStock, productImage } = formData;
-        if (![productName, productDescription, productPrice, productStock, productImage].every(Boolean)) {
-            return NextResponse.json({
+
+        // Validation
+        if (
+            !productName.trim() ||
+            !productDescription.trim() ||
+            isNaN(Number(productPrice)) || // Ensure price is a number
+            isNaN(Number(productStock)) || // Ensure stock is a number
+            !productImage.trim()
+        ) {
+            return {
                 success: false,
-                message: "All fields are required.",
-            }, { status: 400 });
+                message: "Invalid input data. Please check your fields.",
+            };
         }
 
-        // Create a new product
-        const newProduct = new Product({
+        const product = await Product.create({
             productName,
             productDescription,
-            productPrice: Number(productPrice), // Ensure proper type
-            productStock: Number(productStock), // Ensure proper type
+            productPrice: Number(productPrice), // Convert to Number
+            productStock: Number(productStock), // Convert to Number
             productImage,
         });
 
-        await newProduct.save();
-
-        // Revalidate the specified path
-        revalidatePath(pathToRevalidate);
-
-        return NextResponse.json({
-            success: true,
-            message: "Product added successfully.",
-        });
-    } catch (error: any) {
+        if (product) {
+            revalidatePath(pathToRevalidate);
+            return {
+                success: true,
+                message: "Product added successfully.",
+            };
+        }
+    } catch (error) {
         console.error("Error adding product:", error);
-        return NextResponse.json({
+        return {
             success: false,
-            message: "Something went wrong! Please try again.",
-        }, { status: 500 });
+            message: "An error occurred while adding the product.",
+        };
     }
 }
-
 
 
 // Fetch all products from mongoDB

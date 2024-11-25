@@ -36,29 +36,23 @@ const AddNewProduct = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!productFormData) {
+
+    if (
+      !productFormData.productName.trim() ||
+      !productFormData.productDescription.trim() ||
+      !productFormData.productPrice.trim() ||
+      !productFormData.productStock.trim() ||
+      !productFormData.productImage.trim()
+    ) {
       setError("All fields are required.");
       return;
     }
-    if (Number(productFormData.productStock) <= 0) {
-      setError("Out of stock"); // Logic for out of stock
-      return;
-    }
-    setError(""); // clear error
 
-    // Handle form submission logic here
+    setError("");
+
     const response = await productsFormAction(productFormData, "/products");
-    // console.log(response);
 
-    if (!response) {
-      setError("Failed to add product");
-    }
-
-    if (response) {
-      return;
-      // window.location.reload();
-    }
-    if (response) {
+    if (response?.success) {
       setOpenDialog(false);
       setProductFormData({
         productName: "",
@@ -67,6 +61,11 @@ const AddNewProduct = () => {
         productStock: "",
         productImage: "",
       });
+
+      // Optionally refresh the page or navigate
+      router.refresh();
+    } else {
+      setError(response?.message || "Failed to add product.");
     }
   };
 
