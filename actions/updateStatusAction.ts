@@ -1,4 +1,6 @@
-// src/actions/updateStatusAction.ts
+"use server";
+
+
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb"; // Replace with your actual DB connection
 import Order from "@/models/order";

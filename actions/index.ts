@@ -9,8 +9,8 @@ import Product from "@/models/product";
 import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
 import Order from "@/models/order";
-import { Order as OrderType } from "@/types";
-import { NextApiRequest, NextApiResponse } from "next";
+// import { Order as OrderType } from "@/types";
+// import { NextApiRequest, NextApiResponse } from "next";
 
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
