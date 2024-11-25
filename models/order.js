@@ -1,5 +1,9 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
+if (typeof window !== "undefined") {
+  throw new Error("Mongoose models cannot run on the client-side");
+}
+
 const orderSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
@@ -15,7 +19,7 @@ const orderSchema = new Schema({
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: "Product", // Reference Product model
+        ref: "Product",
         required: true,
       },
       quantity: {
@@ -38,7 +42,7 @@ const orderSchema = new Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ["pending", "paid", "shipped"], // Example values
+    enum: ["pending", "paid", "shipped"],
     required: true,
   },
   shippingAddress: {
