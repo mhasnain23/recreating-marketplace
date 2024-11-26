@@ -183,10 +183,7 @@ const ProductCard = ({ products, userInfo }: ProductCardProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-0 p-3 mt-5 min-h-screen">
       {products.map((product: Product) => (
-        <Card
-          key={product._id}
-          className="hover:scale-[1.07] transition-all ease-in duration-[0.2s]"
-        >
+        <Card key={product._id} className="max-w-xs h-[600px]">
           <CardContent>
             <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <Link
@@ -195,11 +192,11 @@ const ProductCard = ({ products, userInfo }: ProductCardProps) => {
                 }
               >
                 <Image
-                  className="p-8 rounded-xl object-cover scale-[1.2] transition-all ease-in duration-[0.2s]"
+                  className="p-4 rounded-3xl object-cover hover:scale-[1.1] transition-all ease-in duration-[0.2s]"
                   src={product.productImage}
                   alt={product.productName}
                   width={300}
-                  height={200}
+                  height={300}
                   quality={100}
                   priority
                 />
