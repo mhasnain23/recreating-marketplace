@@ -1,8 +1,9 @@
+// models/product.js
 import mongoose from "mongoose";
 
-// if (typeof window !== "undefined") {
-//   throw new Error("Mongoose models cannot be used on the client-side");
-// }
+if (typeof window !== "undefined") {
+  throw new Error("Mongoose models cannot be used on the client-side");
+}
 
 const productSchema = new mongoose.Schema({
   productName: {
@@ -22,7 +23,7 @@ const productSchema = new mongoose.Schema({
     required: false,
   },
   productImage: {
-    type: String, // Changed to Number for price
+    type: String,
     required: true,
   },
 });
