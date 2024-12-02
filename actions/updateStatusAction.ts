@@ -3,7 +3,7 @@
 
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb"; // Replace with your actual DB connection
-import Order from "@/lib/models/order";
+import Order from "@/models/order";
 import { NextApiRequest } from "next";
 
 export async function POST(req: NextApiRequest) {
