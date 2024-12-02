@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sheet, SheetContent, SheetHeader } from "../ui/sheet";
 import { MenuIcon } from "lucide-react";
 import { Button } from "../ui/button";
-import { DialogTitle, DialogTrigger } from "../ui/dialog";
+import { DialogTitle } from "../ui/dialog";
 
 interface UserData {
   id: string;
