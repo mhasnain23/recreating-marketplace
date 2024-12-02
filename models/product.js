@@ -2,9 +2,9 @@
 import mongoose from "mongoose";
 
 // Check if the code is running in a client-side environment
-if (typeof window !== "undefined") {
-  throw new Error("Mongoose models cannot be used on the client-side");
-}
+// if (typeof window !== "undefined") {
+//   throw new Error("Mongoose models cannot be used on the client-side");
+// }
 
 // Define the schema for the Product model
 const productSchema = new mongoose.Schema({
