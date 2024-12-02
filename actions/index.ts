@@ -412,6 +412,7 @@ export const createPaymentSession = async (items: any[], userId: string) => {
         // Create pending order in database with a temporary shipping address
         await Order.create({
             userId: userId,
+            vendorId: items[0].vendorId,
             products: items.map(item => ({
                 productId: item._id,
                 quantity: item.quantity,

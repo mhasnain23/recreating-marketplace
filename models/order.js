@@ -8,13 +8,13 @@ if (typeof window !== "undefined") {
 const orderSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User ",
+    ref: "User",
     required: true,
   },
   vendorId: {
     type: Schema.Types.ObjectId,
-    ref: "User ",
-    required: true,
+    ref: "User",
+    // required: true,
   },
   products: [
     {

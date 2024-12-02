@@ -42,13 +42,14 @@ export default function CartPage() {
         return;
       }
 
+      console.log(items);
+
       setIsLoading(true);
       const response = await createPaymentSession(items, userInfo._id);
 
       if (!response.success) {
         throw new Error(response.error);
       }
-
       if (response.url) {
         window.location.href = response.url;
         toast.success("Order placed successfully");
