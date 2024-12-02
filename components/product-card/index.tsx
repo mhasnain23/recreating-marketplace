@@ -191,14 +191,14 @@ const ProductCard = ({ products, userInfo }: ProductCardProps) => {
                   product.productStock <= 0 ? "/products" : `/${product._id}`
                 }
               >
-                <Image
+                <img
                   className="p-4 rounded-3xl object-cover hover:scale-[1.1] transition-all ease-in duration-[0.2s]"
                   src={product.productImage}
                   alt={product.productName}
-                  width={300}
-                  height={300}
-                  quality={100}
-                  priority
+                  // width={300}
+                  // height={300}
+                  // quality={100}
+                  // priority
                 />
               </Link>
               <div className="px-5 pb-5">

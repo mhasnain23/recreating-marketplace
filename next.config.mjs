@@ -16,6 +16,7 @@ const nextConfig = {
       "cdn.suitdirect.co.uk",
       "appleshop.com.pk",
       "images.pexels.com",
+      "files.refurbed.com",
     ],
   },
 };

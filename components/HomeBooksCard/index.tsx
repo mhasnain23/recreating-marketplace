@@ -217,14 +217,14 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
                   product.productStock <= 0 ? "/products" : `/${product._id}`
                 }
               >
-                <Image
+                <img
                   className="p-8 rounded-2xl object-cover"
                   src={product.productImage}
                   alt={product.productName}
-                  width={400}
-                  height={300}
-                  quality={100}
-                  priority
+                  // width={400}
+                  // height={300}
+                  // quality={100}
+                  // priority
                 />
               </Link>
               <div className="px-5 pb-5">
