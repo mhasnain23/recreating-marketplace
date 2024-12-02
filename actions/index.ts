@@ -4,13 +4,11 @@ import jwt from "jsonwebtoken"
 import { cookies } from "next/headers"
 import bcryptjs from "bcryptjs"
 import { NextResponse } from "next/server";
-import UserModel from "@/models/user";
-import Product from "@/models/product";
+import UserModel from "@/lib/models/user";
+import Product from "@/lib/models/product";
 import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
-import Order from "@/models/order";
-// import { Order as OrderType } from "@/types";
-// import { NextApiRequest, NextApiResponse } from "next";
+import Order from "@/lib/models/order";
 
 // Initialize Stripe with secret key
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);

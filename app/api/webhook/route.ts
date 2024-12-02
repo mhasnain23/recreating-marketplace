@@ -1,6 +1,6 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import Order from '@/models/order'; // Your MongoDB Order model
+import Order from '@/lib/models/order'; // Your MongoDB Order model
 import connectToDB from '@/lib/mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 
