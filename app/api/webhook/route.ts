@@ -1,7 +1,7 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import Order from '@/lib/models/order'; // Your MongoDB Order model
-import connectToDB from '@/lib/mongodb';
+import connectToDB from '@/database/mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);

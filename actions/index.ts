@@ -1,5 +1,5 @@
 'use server';
-import connectDB from "@/lib/mongodb";
+import connectDB from "@/database/mongodb";
 import jwt from "jsonwebtoken"
 import { cookies } from "next/headers"
 import bcryptjs from "bcryptjs"
