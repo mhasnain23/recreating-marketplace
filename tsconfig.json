@@ -33,8 +33,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "lib/models/product.js"
-, "lib/models/order.js"  ],
+    "models/product.js"
+, "models/order.js"  ],
   "exclude": [
     "node_modules"
   ]
