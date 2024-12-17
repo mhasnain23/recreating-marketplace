@@ -1,11 +1,6 @@
-// models/order.js
-import mongoose, { Schema } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-if (typeof window !== "undefined") {
-  throw new Error("Mongoose models cannot be used on the client-side");
-}
-
-const orderSchema = new mongoose.Schema({
+const orderSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -56,5 +51,6 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
+const Order = models.Order || model("Order", orderSchema);
+
 export default Order;

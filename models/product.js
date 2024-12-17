@@ -1,5 +1,5 @@
 // models/product.js
-import mongoose from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 // Check if the code is running in a client-side environment
 // if (typeof window !== "undefined") {
@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 // }
 
 // Define the schema for the Product model
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
   productName: {
     type: String,
     required: true, // This field is required
@@ -31,8 +31,7 @@ const productSchema = new mongoose.Schema({
 });
 
 // Create the Product model using the schema
-const Product =
-  mongoose.models.Product || mongoose.model("Product", productSchema);
+const Product = models.Product || model("Product", productSchema);
 
 // Export the Product model for use in other parts of the application
 export default Product;

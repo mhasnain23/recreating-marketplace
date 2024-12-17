@@ -1,10 +1,6 @@
-import mongoose from "mongoose"; // Ensure mongoose is fully imported
+import { Schema, model, models } from "mongoose";
 
-// if (typeof window !== "undefined") {
-//   throw new Error("Mongoose models cannot be used on the client-side");
-// }
-
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
   userName: {
     type: String,
     required: true,
@@ -25,6 +21,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const UserModel = mongoose.models.User || mongoose.model("User", UserSchema);
+const UserModel = models.User || model("User", UserSchema);
 
 export default UserModel;
