@@ -1,7 +1,7 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import Order from '@/models/order';
-import connectToDB from '@/database/index';
+import connectToDB from '@/database';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);

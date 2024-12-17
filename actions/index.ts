@@ -1,5 +1,5 @@
 'use server';
-import connectDB from "@/database/index";
+import connectDB from "@/database";
 import jwt from "jsonwebtoken"
 import { cookies } from "next/headers"
 import bcryptjs from "bcryptjs"
