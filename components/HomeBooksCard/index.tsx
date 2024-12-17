@@ -206,25 +206,22 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
     // <main className="lg:max-w-7xl w-screen mx-auto">
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 px-10">
       {products.map((product: Product) => (
-        <Card
-          key={product._id}
-          className="hover:scale-[1.07] transition-all ease-in duration-[0.2s] p-0"
-        >
+        <Card key={product._id} className="">
           <CardContent className="p-0">
-            <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full max-w-sm bg-white border border-gray-200 overflow-hidden rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <Link
                 href={
                   product.productStock <= 0 ? "/products" : `/${product._id}`
                 }
               >
-                <img
-                  className="p-8 rounded-2xl object-cover"
+                <Image
+                  className="p-8 rounded-2xl object-cover hover:scale-[1.2] transition-all ease-in duration-200"
                   src={product.productImage}
                   alt={product.productName}
-                  // width={400}
-                  // height={300}
-                  // quality={100}
-                  // priority
+                  width={400}
+                  height={300}
+                  quality={100}
+                  priority
                 />
               </Link>
               <div className="px-5 pb-5">

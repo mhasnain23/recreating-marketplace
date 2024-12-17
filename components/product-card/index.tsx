@@ -185,14 +185,14 @@ const ProductCard = ({ products, userInfo }: ProductCardProps) => {
       {products.map((product: Product) => (
         <Card key={product._id} className="max-w-xs h-[600px]">
           <CardContent>
-            <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full max-w-sm bg-white border overflow-hidden border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <Link
                 href={
                   product.productStock <= 0 ? "/products" : `/${product._id}`
                 }
               >
                 <img
-                  className="p-4 rounded-3xl object-cover hover:scale-[1.1] transition-all ease-in duration-[0.2s]"
+                  className="p-4 rounded-3xl object-cover hover:scale-[1.1] transition-all ease-in duration-200"
                   src={product.productImage}
                   alt={product.productName}
                   // width={300}

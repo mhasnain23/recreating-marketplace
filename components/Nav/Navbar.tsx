@@ -124,10 +124,11 @@ const Navbar = () => {
                 </DialogTitle>
                 <div className="flex flex-col items-center justify-center p-16">
                   <ul className="flex flex-col gap-6">
-                    {menuItems.map((item) => (
+                    {menuItems.map((item, index) => (
                       <Link
                         className="text-[15px] font-bold dark:text-white dark:hover:text-white/70 hover:border-b pb-1 dark:border-white/70 border-gray-600 transition-all ease-linear duration-[0.1s]"
                         href={item.path}
+                        key={index}
                       >
                         <li key={item.text}>{item.show ? item.text : null}</li>
                       </Link>
