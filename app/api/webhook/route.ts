@@ -1,16 +1,10 @@
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import Order from '@/models/order'; // Your MongoDB Order model
+import Order from '@/models/order';
 import connectToDB from '@/lib/mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-// export const config = {
-//     api: {
-//         bodyParser: false,
-//     },
-// };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
