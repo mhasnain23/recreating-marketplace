@@ -1,6 +1,5 @@
 import { fetchProductsAction, fetchUserAction } from "@/actions";
 import HomeBooksCard from "@/components/HomeBooksCard";
-// import ProductCard from "@/components/product-card";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -9,6 +8,10 @@ export default async function Home() {
   const userInfo = await fetchUserAction();
 
   // console.log(userInfo);
+
+  if (!userInfo.success) {
+    redirect("/unauth-page");
+  }
 
   const product = await fetchProductsAction();
 
