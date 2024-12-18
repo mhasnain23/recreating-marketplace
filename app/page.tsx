@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic"; // Force dynamic rendering
 export default async function Home() {
   const userInfo = await fetchUserAction();
 
