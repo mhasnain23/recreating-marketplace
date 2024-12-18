@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "models/product.ts"
-, "models/order.ts"  ],
+, "models/order.ts", "lib/db.js"  ],
   "exclude": [
     "node_modules"
   ]
