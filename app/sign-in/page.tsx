@@ -1,7 +1,6 @@
 import { fetchUserAction } from "@/actions";
 import SignInForm from "@/components/SignInForm";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const SignInPage = async () => {
   const userInfo = await fetchUserAction();

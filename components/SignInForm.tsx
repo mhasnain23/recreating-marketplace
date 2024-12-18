@@ -19,7 +19,7 @@ export default function SignInForm() {
     const res = await loginUserAction(signInFormData);
     setSignInFormData(initialSignInFormData);
     if (res.success) {
-      router.push("/");
+      router.push("/products");
       window.location.reload();
     }
     if (!res.success) {

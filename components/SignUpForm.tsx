@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { initialSignUpFormData } from "@/app/utils";
 import { registerUserAction } from "@/actions";
 
@@ -12,15 +12,6 @@ const SignUpForm = () => {
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpFormData);
 
   const router = useRouter();
-
-  /* I will fix this later as soon as possiblr  */
-
-  // function handleSignUpBtnValid() {
-  //   return Object.keys(signUpFormData).every(
-  //     (keys) => signUpFormData[keys].trim() !== ""
-  //   );
-  // }
-
   const handleSubmit = async () => {
     try {
       const result = await registerUserAction(signUpFormData);
