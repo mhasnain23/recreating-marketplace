@@ -4,16 +4,8 @@ import mongoose from "mongoose";
 // Cached connection type
 
 async function connectDB() {
-    try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI!);
-        if (conn) {
-            console.log("Connected to MongoDB");
-        } else {
-            console.log("Failed to connect to MongoDB");
-        }
-    } catch (error) {
-        console.log(" Internal server error " + error);
-    }
+    await mongoose.connect(process.env.MONGODB_URI!)
+        .then(() => console.log("connected to MongoDB")).catch((err) => console.log(err))
 }
 
 export default connectDB;
