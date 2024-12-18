@@ -2,7 +2,7 @@
 
 
 import { NextResponse } from "next/server";
-import connectDB from "@/database"; // Replace with your actual DB connection
+import connectDB from "@/lib/db"; // Replace with your actual DB connection
 import Order from "@/models/order";
 import { NextApiRequest } from "next";
 

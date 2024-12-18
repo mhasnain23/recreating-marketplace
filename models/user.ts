@@ -1,6 +1,6 @@
-import { Schema, model, models } from "mongoose";
+import mongoose from "mongoose";
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true,
@@ -20,7 +20,8 @@ const UserSchema = new Schema({
     default: "buyer", // Default role
   },
 });
+// Export model if it exists, or create new one
+export const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
-const UserModel = models.User || model("User", UserSchema);
-
-export default UserModel;
+// Specify Node.js runtime
+export const runtime = 'nodejs';

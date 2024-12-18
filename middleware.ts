@@ -1,47 +1,47 @@
 import { getToken } from 'next-auth/jwt';
-// import { getSession } from 'next-auth/react';
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchUserAction } from './actions';
+
+// Define protected routes and their allowed roles
+const protectedRoutes = {
+    '/vendor': ['vendor'],
+    '/buyer': ['buyer'],
+} as const;
 
 export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const path = req.nextUrl.pathname;
 
-    const url = req.nextUrl.pathname;
+    // Check if authentication is required for this path
+    const isProtectedRoute = Object.keys(protectedRoutes).some(route =>
+        path.startsWith(route)
+    );
 
-    // Check if the user is authenticated
-    if (!token) {
-        return NextResponse.redirect('/signin'); // Redirect to login if not authenticated
+    // Redirect to signin if no token on protected routes
+    if (isProtectedRoute && !token) {
+        return NextResponse.redirect(new URL('/signin', req.url));
     }
 
-    // Role-based redirection
-    if (url.startsWith('/admin') && token.role !== 'admin') {
-        return NextResponse.redirect('/admin'); // Redirect non-admin users
-    }
-
-    if (url.startsWith('/vendor') && token.role !== 'vendor') {
-        return NextResponse.redirect('/dashboard'); // Redirect non-vendors
-    }
-    if (url.startsWith('/buyer') && token.role === 'buyer') {
-        return NextResponse.redirect('/products'); // Redirect non-vendors
-    }
-
-
-    return NextResponse.next(); // Allow access if roles match
-}
-
-export const withRoleProtection = (allowedRoles: any) => {
-    return async (req: any, res: any, next: any) => {
-        const session = await fetchUserAction();
-
-        if (!session || !allowedRoles.includes(session.data.role)) {
-            return res.status(403).json({ message: "Access denied" });
+    // Handle role-based access
+    if (token?.role) {
+        // Redirect buyers to products page
+        if (path.startsWith('/buyer') && token.role === 'buyer') {
+            return NextResponse.redirect(new URL('/products', req.url));
         }
 
-        next();
-    };
-};
+        // Redirect non-vendors away from vendor routes
+        if (path.startsWith('/vendor') && token.role !== 'vendor') {
+            return NextResponse.redirect(new URL('/dashboard', req.url));
+        }
+    }
 
+    return NextResponse.next();
+}
 
 export const config = {
-    matcher: ['/admin/:path*', '/vendor/:path*'], // Routes to protect
+    matcher: [
+        // Protected routes
+        '/vendor/:path*',
+        '/buyer/:path*',
+        // Add other protected paths as needed
+    ],
 };

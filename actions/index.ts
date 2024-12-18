@@ -1,10 +1,10 @@
 'use server';
-import connectDB from "@/database";
+import connectDB from "@/lib/db";
 import jwt from "jsonwebtoken"
 import { cookies } from "next/headers"
 import bcryptjs from "bcryptjs"
 import { NextResponse } from "next/server";
-import UserModel from "@/models/user";
+import { User } from "@/models/user";
 import Product from "@/models/product";
 import { revalidatePath } from "next/cache";
 import Stripe from 'stripe';
@@ -19,7 +19,7 @@ export async function registerUserAction(formData: any) {
     await connectDB();
     try {
         const { userName, email, password, role } = formData;
-        const existingUser = await UserModel.findOne({ email });
+        const existingUser = await User.findOne({ email });
 
         // Check if user already exists
         if (existingUser) {
@@ -35,7 +35,7 @@ export async function registerUserAction(formData: any) {
         const hashedPassword = await bcryptjs.hash(password, salt)
 
         // Create a new user instance
-        const newUser = new UserModel({
+        const newUser = new User({
             userName,
             email,
             password: hashedPassword,
@@ -73,7 +73,7 @@ export async function loginUserAction(formData: any) {
         const { email, password } = formData;
 
         // Find the user with the provided email
-        const existingUser = await UserModel.findOne({ email });
+        const existingUser = await User.findOne({ email });
 
         // If user does not exist, return an error message
         if (!existingUser) {
@@ -143,7 +143,7 @@ export async function fetchUserAction() {
 
         // Verify the token and get the user data
         const decodedToken = jwt.verify(token, "DEFAULT_KEY") as jwt.JwtPayload; // Type assertion
-        const getUserInfo = await UserModel.findOne({ _id: decodedToken.id });
+        const getUserInfo = await User.findOne({ _id: decodedToken.id });
 
         // If user data is found, return the user data
         if (getUserInfo) {
