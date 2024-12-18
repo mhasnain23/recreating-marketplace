@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
-export default async function connectDB() {
+// const connectDB = async () => {
+//     const connectionURL = process.env.MONGODB_URL!;
+
+//     mongoose
+//         .connect(connectionURL)
+//         .then(() => console.log("Job board connection is successfull"))
+//         .catch((e) => console.log(e));
+// };
+
+// export default connectDB;
+
+async function connectDB() {
     const uri = process.env.MONGODB_URI;
 
     if (!uri) {
@@ -15,3 +26,5 @@ export default async function connectDB() {
         throw error; // Rethrow the error if you want to handle it in the caller
     }
 }
+
+export default connectDB;
