@@ -1,10 +1,12 @@
-// import { fetchUserAction } from "@/actions";
+import { fetchUserAction } from "@/actions";
 import SignInForm from "@/components/SignInForm";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
+
+export const dynamic = "force-dynamic";
 
 const SignInPage = async () => {
-  // const userInfo = await fetchUserAction();
-  // if (userInfo.success) redirect("/");
+  const userInfo = await fetchUserAction();
+  if (userInfo.success) redirect("/");
 
   return (
     <div>
