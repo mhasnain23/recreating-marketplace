@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-  const connectionURL = process.env.MONGODB_URL;
+  const connectionURL: string | undefined = process.env.MONGODB_URL!;
 
   mongoose
     .connect(connectionURL)
@@ -10,6 +10,15 @@ const connectDB = async () => {
 };
 
 export default connectDB;
+
+
+
+
+
+
+
+
+
 
 // export default async function connectDB() {
 //     const uri = process.env.MONGODB_URI;
