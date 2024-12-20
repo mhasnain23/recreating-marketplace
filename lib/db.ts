@@ -1,15 +1,13 @@
 import mongoose from "mongoose";
 
-// const connectDB = async () => {
-//   const connectionURL: string | undefined = process.env.MONGODB_URL!;
+const connectDB = async () => {
+  await mongoose
+    .connect(process.env.MONGODB_URL!)
+    .then(() => console.log("Job board connection is successfull"))
+    .catch((e) => console.log(e));
+};
 
-//   mongoose
-//     .connect(connectionURL)
-//     .then(() => console.log("Job board connection is successfull"))
-//     .catch((e) => console.log(e));
-// };
-
-// export default connectDB;
+export default connectDB;
 
 
 
@@ -20,18 +18,18 @@ import mongoose from "mongoose";
 
 
 
-export default async function connectDB() {
-  const uri = process.env.MONGODB_URI;
+// export default async function connectDB() {
+//   const uri = process.env.MONGODB_URI;
 
-  if (!uri) {
-    throw new Error("❌ MONGODB_URI is not defined in the environment variables");
-  }
+//   if (!uri) {
+//     throw new Error("❌ MONGODB_URI is not defined in the environment variables");
+//   }
 
-  try {
-    await mongoose.connect(uri);
-    console.log("✅ Connected to MongoDB");
-  } catch (error: any) {
-    console.error("❌ Error connecting to MongoDB:", error.message);
-    throw error; // Rethrow the error if you want to handle it in the caller
-  }
-}
+//   try {
+//     await mongoose.connect(uri);
+//     console.log("✅ Connected to MongoDB");
+//   } catch (error: any) {
+//     console.error("❌ Error connecting to MongoDB:", error.message);
+//     throw error; // Rethrow the error if you want to handle it in the caller
+//   }
+// }
