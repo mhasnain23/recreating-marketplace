@@ -1,16 +1,21 @@
 import mongoose from "mongoose";
 
 const connectDB = async () => {
-  await mongoose
-    .connect(process.env.MONGODB_URL!)
-    .then(() => console.log("Job board connection is successfull"))
-    .catch((e) => console.log(e));
+  try {
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URL is not defined in environment variables");
+    }
+
+    await mongoose.connect(process.env.MONGODB_URI);
+
+    console.log("Database connection successful 🚀");
+  } catch (error: any) {
+    console.error("Database connection error: ", error.message);
+    process.exit(1); // Exit the process if the connection fails
+  }
 };
 
 export default connectDB;
-
-
-
 
 
 
