@@ -3,11 +3,10 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     if (!process.env.MONGODB_URI) {
-      throw new Error("MONGODB_URL is not defined in environment variables");
+      throw new Error("MONGODB_URI is not defined in environment variables");
     }
 
-    await mongoose.connect(process.env.MONGODB_URI);
-
+    await mongoose.connect(process.env.MONGODB_URI!);
     console.log("Database connection successful 🚀");
   } catch (error: any) {
     console.error("Database connection error: ", error.message);
@@ -16,8 +15,6 @@ const connectDB = async () => {
 };
 
 export default connectDB;
-
-
 
 
 
