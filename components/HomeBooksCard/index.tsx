@@ -208,14 +208,14 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
       {products.map((product: Product) => (
         <Card key={product._id} className="">
           <CardContent className="p-0">
-            <div className="w-full max-w-sm bg-white border border-gray-200 overflow-hidden rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <div className="w-full max-w-sm min-h-[380px] bg-white border border-gray-200 overflow-hidden rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <Link
                 href={
                   product.productStock <= 0 ? "/products" : `/${product._id}`
                 }
               >
                 <Image
-                  className="p-8 rounded-2xl object-cover hover:scale-[1.2] transition-all ease-in duration-200"
+                  className="p-8 rounded-2xl object-cover hover:scale-[1.1] transition-all ease-in duration-200"
                   src={product.productImage}
                   alt={product.productName}
                   width={400}
@@ -224,7 +224,7 @@ const HomeBooksCard = ({ products, userInfo }: ProductCardProps) => {
                   priority
                 />
               </Link>
-              <div className="px-5 pb-5">
+              <div className="px-5 pb-5 mx-3">
                 <Link href="/">
                   <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
                     {product.productName}

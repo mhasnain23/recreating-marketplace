@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "@/components/ui/card"; // Adjust the import based on the actual path of your Card component
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { Toast, ToastProvider } from "../ui/toast";
 
 interface ProductInfo {
   productImage: string;
@@ -52,11 +53,11 @@ const DetailsPage: React.FC<DetailsPageProps> = ({ getProductInfo }) => {
             <p
               className={`${
                 productStock <= 0
-                  ? "text-md font-bold mt-4 text-red-600"
-                  : "text-md font-bold mt-4 text-green-400"
-              }`}
+                  ? "text-md font-bold mt-4 text-red-600 bg-red-200 p-1 rounded-full"
+                  : "text-md font-bold mt-4 text-green-600 bg-green-200 p-1 rounded-full"
+              } w-[80px] flex items-center justify-center`}
             >
-              Stock: {productStock <= 0 ? "Out of Stock" : "In Stock"}
+              {productStock <= 0 ? "Out of Stock" : "In Stock"}
             </p>
           </div>
         </div>
