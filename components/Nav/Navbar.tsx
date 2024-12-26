@@ -70,7 +70,7 @@ const Navbar = () => {
     <nav>
       <div className="fixed top-0 z-10 w-full mx-auto font-[poppins] bg-white bg-opacity-10 backdrop-blur-lg shadow-md border-b border-gray-500">
         <div className="max-w-7xl mx-auto h-[70px] flex items-center justify-between">
-          <div className="h-[40px] flex items-center justify-center">
+          <div className="h-[40px] flex items-center justify-center md:px-0 px-5">
             <h1 className="text-3xl dark:text-white/90 font-extrabold tracking-tight capitalize">
               <Link href={"/"}>
                 B2B

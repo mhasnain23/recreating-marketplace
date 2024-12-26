@@ -22,8 +22,8 @@ const ProductsPage = async ({ searchParams }: ProductsPageProps) => {
 
   return (
     <div className="max-w-7xl mx-auto font-[poppins] mt-[10rem]">
-      <div className="w-full h-full xl:max-w-7xl flex justify-between items-center px-15">
-        <div>
+      <div className="w-full h-full xl:max-w-7xl flex md:flex-row flex-col md:justify-between justify-center items-center px-15">
+        <div className="mb-2">
           <h2 className="lg:text-4xl text-2xl font-semibold tracking-tight text-white/80">
             {searchParams.query
               ? `Search results for "${searchParams.query}"`

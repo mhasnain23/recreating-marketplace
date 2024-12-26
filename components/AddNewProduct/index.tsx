@@ -87,7 +87,7 @@ const AddNewProduct = () => {
         onClick={() => setOpenDialog(true)}
         className="hover:bg-[#470ca5] dark:bg-[#6D28D9] hover:text-white/90 transition-all ease-in-out duration-[0.3s]"
       >
-        Add New Product
+        Add Product
       </Button>
       <Dialog
         open={openDialog}
