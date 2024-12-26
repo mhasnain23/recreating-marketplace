@@ -1,12 +1,10 @@
 import VendorDashboard from "@/components/VendorDashboard";
 import BuyerDashboard from "@/components/BuyerDashboard";
-// import { fetchUserAction } from "@/actions";
 import { getRole } from "../utils/getRole";
 
-async function Dashboard() {
-  // const { data } = await fetchUserAction();
-  // const vendorId = (await data.role) === "vendor" ? data._id : null; // Retrieve userId from action
+export const dynamic = "force-dynamic";
 
+async function Dashboard() {
   try {
     const role = await getRole();
 
