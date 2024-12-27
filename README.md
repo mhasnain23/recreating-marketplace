@@ -1,6 +1,6 @@
 # B2B Wholesale Marketplace
 
-A modern B2B wholesale marketplace built 1 with Next.js4, allowing vendors to sell products and buyers to make purchases in bulk.
+A modern B2B wholesale marketplace built with Next.js 14 allows vendors to sell products and buyers to make bulk purchases.
 
 ## 🚀 Tech Stack
 
